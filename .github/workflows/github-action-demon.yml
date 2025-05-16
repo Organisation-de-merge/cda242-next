@@ -37,6 +37,7 @@ jobs:
       - build
     runs-on: ubuntu-latest
     strategy:
+        fail-fast: false
         matrix:
             browser: [chrome, firefox, edge]
 
@@ -50,9 +51,10 @@ jobs:
             /home/runner/.cache/Cypress
           key: ${{ runner.os }}--node_modules-${{ hashFiles('**/package-lock.json') }}
 
-      - run: npm run dev
-      - uses: cypress-io/github-action@v6
+      - name: Cypress
+        uses: cypress-io/github-action@v6
         with:
+          test: npm run dev
           browser: ${{ matrix.browser }}
 
       - uses: actions/upload-artifact@v4
