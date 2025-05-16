@@ -37,7 +37,6 @@ jobs:
       - build
     runs-on: ubuntu-latest
     strategy:
-        fail-fast: false
         matrix:
             browser: [chrome, firefox, edge]
 
@@ -54,13 +53,13 @@ jobs:
       - name: Cypress
         uses: cypress-io/github-action@v6
         with:
-          build: npm run build
+          start: npm run dev
           browser: ${{ matrix.browser }}
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-            name: cypress-videos
+            name: cypress-videos-${{ matrix.browser }}
             path: /cypress/videos
 
       - uses: actions/upload-artifact@v4
