@@ -11,7 +11,7 @@ jobs:
         run: npm run build
 
       - name: Run Test
-        run: npm run test
+        run: npm run e2e:headless
 
 #   build:
 #     runs-on: ubuntu-latest
