@@ -48,3 +48,7 @@ jobs:
       - name: Run Test
         run: npm run e2e:headless
 
+      - uses: actions/upload-artifact@v4
+        with:
+            path: 
+
