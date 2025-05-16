@@ -54,7 +54,7 @@ jobs:
       - name: Cypress
         uses: cypress-io/github-action@v6
         with:
-          test: npm run dev
+          build: npm run build
           browser: ${{ matrix.browser }}
 
       - uses: actions/upload-artifact@v4
