@@ -60,6 +60,9 @@ jobs:
     needs: 
       - test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@v1
