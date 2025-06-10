@@ -97,6 +97,8 @@ jobs:
           tags: ghcr.io/mathis-trn/cda242-next/cda242-dockerpackage:latest
 
   deploy-docker:
+    needs: 
+      - build-docker
     runs-on: ubuntu-latest
     permissions:
       contents: read
