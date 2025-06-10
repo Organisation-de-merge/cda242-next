@@ -56,28 +56,28 @@ jobs:
           name: cypress-screenshots 
           path: /cypress/screenshots
 
-  deploy:
-    needs: 
-      - test
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Deploy to Server via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ${{ secrets.AWS_USERNAME }}
-          key: ${{ secrets.AWS_KEY }}
-          script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            cd cda242-next
-            git pull origin main
-            npm install
-            npm run build
-            pm2 restart npm
+  # deploy:
+  #   needs: 
+  #     - test
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   steps:
+  #     - name: Deploy to Server via SSH
+  #       uses: appleboy/ssh-action@v1
+  #       with:
+  #         host: ${{ secrets.AWS_HOST }}
+  #         username: ${{ secrets.AWS_USERNAME }}
+  #         key: ${{ secrets.AWS_KEY }}
+  #         script: |
+  #           export NVM_DIR="$HOME/.nvm"
+  #           [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  #           cd cda242-next
+  #           git pull origin main
+  #           npm install
+  #           npm run build
+  #           pm2 restart npm
 
   build-docker:
     runs-on: ubuntu-latest
@@ -95,3 +95,22 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/mathis-trn/cda242-next/cda242-dockerpackage:latest
+
+  deploy-docker:
+    needs: 
+      - build-docker
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Deploy Docker Container via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_KEY }}
+          script: |
+            cd prod
+            sudo docker compose -f docker-compose.prod.yml pull
+            sudo docker compose -f docker-compose.prod.yml up -d
