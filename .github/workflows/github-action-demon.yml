@@ -1,18 +1,5 @@
 on: [push]
 jobs:
-    # job: 
-    #   runs-on: ubuntu-latest
-    #   steps: 
-    #   - uses: actions/checkout@v4
-    #   - name: Run npm ci
-    #     run: npm install
-
-    #   - name: Run Build
-    #     run: npm run build
-
-    #   - name: Run Test
-    #     run: npm run e2e:headless
-
   build:
     runs-on: ubuntu-latest
     steps: 
@@ -67,3 +54,24 @@ jobs:
         with:
           name: cypress-screenshots 
           path: /cypress/screenshots
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_KEY }}
+          port: 22
+          script: |
+            cd ${{ secrets.APP_DIR }}
+            git pull origin main
+            npm install
+            npm run build
+            pm2 reload all
