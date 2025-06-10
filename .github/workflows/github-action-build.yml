@@ -1,0 +1,36 @@
+name: Build and Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
+
+      - name: Prepare SSH key
+        run: |
+          echo "${{ secrets.AWS_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      - name: Deploy to EC2
+        run: |
+          rsync -avz -e "ssh -i key.pem -o StrictHostKeyChecking=no" ./ ${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_HOST }}:${{ secrets.APP_DIR }}
+
+      - name: Start or Restart App on EC2
+        run: |
+          ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_HOST }} << 'EOF'
+            cd ${{ secrets.APP_DIR }}
+            npm install --production
+            pm2 restart app || pm2 start npm --name "app" -- start
+          EOF
