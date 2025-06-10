@@ -69,9 +69,7 @@ jobs:
           key: ${{ secrets.AWS_KEY }}
           script: |
             export NVM_DIR="$HOME/.nvm"[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            cd cda242-next
             git pull origin main
             npm install
-            npm i pm2 -g 
             npm run build
             pm2 restart npm
