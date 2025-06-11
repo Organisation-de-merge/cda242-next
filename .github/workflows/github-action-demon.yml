@@ -108,6 +108,8 @@ jobs:
       - build-docker
     runs-on: ubuntu-latest
     if: ${{ github.ref_name == 'main'}}
+    environment: 
+      name: production
     permissions:
       contents: read
       packages: write
@@ -128,6 +130,8 @@ jobs:
       - build-docker
     runs-on: ubuntu-latest
     if: ${{ github.ref_name == 'develop'}}
+    environment: 
+      name: test
     permissions:
       contents: read
       packages: write
