@@ -1,10 +1,6 @@
-FROM debian:12 AS nodejs-my-website
+FROM node:24.2-alpine3.21
 
-RUN apt-get update -yq \
-&& apt-get install curl gnupg -yq \
-&& curl -sL https://deb.nodesource.com/setup_24.x | bash \
-&& apt-get install nodejs -yq \
-&& apt-get clean -y
+LABEL org.opencontainers.image.source=https://github.com/organisation-de-merge/cda242-next
 
 ADD . /app/
 
@@ -19,5 +15,4 @@ COPY docker/next/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT [ "entrypoint" ]
-
 CMD npm run start
