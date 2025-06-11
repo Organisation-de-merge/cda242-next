@@ -88,13 +88,13 @@ jobs:
         with:
           registry: ghcr.io
           username: MathisTrn
-          password: ${{ secrets.GIT_HUB_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ghcr.io/mathis-trn/cda242-next/cda242-dockerpackage:latest
+          tags: ghcr.io/organisation-de-merge/cda242-next/cda242-dockerpackage:latest
 
   deploy-docker:
     needs: 
