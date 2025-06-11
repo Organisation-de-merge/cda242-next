@@ -97,9 +97,9 @@ jobs:
           context: .
           target: next
           push: true
-          tags: ghcr.io/organisation-de-merge/cda242-next/cda242-dockerpackage:latest
+          tags: ghcr.io/organisation-de-merge/cda242-next/cda242-dockerpackage:${{ github.ref_name }}
 
-  deploy-docker:
+  deploy-docker-prod:
     needs: 
       - build-docker
     runs-on: ubuntu-latest

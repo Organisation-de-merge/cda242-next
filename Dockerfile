@@ -1,7 +1,6 @@
 FROM node:24.2-alpine3.21 AS builder
 
 LABEL org.opencontainers.image.source=https://github.com/organisation-de-merge/cda242-next
-
 ADD . /app/
 
 WORKDIR /app
