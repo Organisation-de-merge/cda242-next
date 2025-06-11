@@ -87,7 +87,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: Mathis-Trn
+          username: MathisTrn
           password: ${{ secrets.GIT_HUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v6
