@@ -95,6 +95,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          target: next
           push: true
           tags: ghcr.io/organisation-de-merge/cda242-next/cda242-dockerpackage:latest
 
