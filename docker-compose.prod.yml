@@ -1,7 +1,0 @@
-services:
-  next-app:
-    image: ghcr.io/mathis-trn/cda242-next/cda242-dockerpackage:latest
-    container_name: cda242-next
-    ports:
-      - "3000:3000"
-    restart: unless-stopped
