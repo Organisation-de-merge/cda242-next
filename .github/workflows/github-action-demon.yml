@@ -1,5 +1,9 @@
 name: Démon CI/CD Pipeline
-on: [push]
+on: 
+  push:
+    branches: 
+      - main
+      - develop
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -103,6 +107,7 @@ jobs:
     needs: 
       - build-docker
     runs-on: ubuntu-latest
+    if: ${{ github.ref_name == 'main'}}
     permissions:
       contents: read
       packages: write
@@ -117,3 +122,23 @@ jobs:
             cd prod
             sudo docker compose -f docker-compose.prod.yml pull
             sudo docker compose -f docker-compose.prod.yml up -d
+
+  deploy-docker-test:
+    needs: 
+      - build-docker
+    runs-on: ubuntu-latest
+    if: ${{ github.ref_name == 'develop'}}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Deploy Docker Container via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_KEY }}
+          script: |
+            cd test
+            sudo docker compose -f docker-compose.test.yml pull
+            sudo docker compose -f docker-compose.test.yml up -d

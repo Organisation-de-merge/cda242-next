@@ -1,0 +1,9 @@
+services:
+  next-app:
+    image: ghcr.io/organisation-de-merge/cda242-next/cda242-dockerpackage:main
+    ports:
+      - "80:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      
