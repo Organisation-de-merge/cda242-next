@@ -1,9 +1,18 @@
 services:
-  next-app:
+  next-prod:
     image: ghcr.io/organisation-de-merge/cda242-next/cda242-dockerpackage:main
-    ports:
-      - "80:3000"
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.next-prod.rule=Host(`ec2-54-225-54-84.compute-1.amazonaws.com`)"
+      - "traefik.http.routers.next-prod.entrypoints=web"
+    networks: 
+      - web
+
+networks:
+  web:
+    name: web
+    external: true
       
