@@ -1,9 +1,18 @@
 services:
-  next-app:
-    image: ghcr.io/organisation-de-merge/cda242-next/cda242-dockerpackage:test
-    ports:
-      - "3000:3000"
+  next-test:
+    image: ghcr.io/organisation-de-merge/cda242-next/cda242-dockerpackage:develop
     restart: unless-stopped
     environment:
       - NODE_ENV=test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.next-test.rule=Host(`54.225.54.84`)"
+      - "traefik.http.routers.next-test.entrypoints=web"
+    networks: 
+      - web
+
+networks:
+  web:
+    name: web
+    external: true
       
