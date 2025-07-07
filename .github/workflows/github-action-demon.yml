@@ -82,6 +82,7 @@ jobs:
   #           npm install
   #           npm run build
   #           pm2 restart npm
+  #           pm2 save
 
   build-docker:
     runs-on: ubuntu-latest
